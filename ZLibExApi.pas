@@ -50,7 +50,12 @@ const
 
   ZLIB_VERSION: PAnsiChar = '1.2.11';
 
-  ZLIB_VERNUM = $12a0;
+  ZLIB_VERNUM = $12b0;
+
+  ZLIB_VER_MAJOR = 1;
+  ZLIB_VER_MINOR = 2;
+  ZLIB_VER_REVISION = 11;
+  ZLIB_VER_SUBREVISION = 0;
 
   {** compression methods ***********************************************************************}
 
@@ -196,8 +201,6 @@ function adler32(adler: Longint; const buf; len: Integer): Longint;
 
 function crc32(crc: Longint; const buf; len: Integer): Longint;
 
-function zlibVersion: PChar;
-
 implementation
 
 {*************************************************************************************************
@@ -299,7 +302,6 @@ function adler32(adler: Longint; const buf; len: Integer): Longint;
 function crc32(crc: Longint; const buf; len: Integer): Longint;
   external;
 
-function zlibVersion; external;
 
 {** zlib function implementations ***************************************************************}
 
