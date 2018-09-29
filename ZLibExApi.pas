@@ -48,14 +48,9 @@ interface
 const
   {** version ids *******************************************************************************}
 
-  ZLIB_VERSION: PAnsiChar = '1.2.8';
+  ZLIB_VERSION: PAnsiChar = '1.2.11';
 
-  ZLIB_VERNUM = $1280;
-
-  ZLIB_VER_MAJOR = 1;
-  ZLIB_VER_MINOR = 2;
-  ZLIB_VER_REVISION = 8;
-  ZLIB_VER_SUBREVISION = 0;
+  ZLIB_VERNUM = $12a0;
 
   {** compression methods ***********************************************************************}
 
@@ -201,6 +196,8 @@ function adler32(adler: Longint; const buf; len: Integer): Longint;
 
 function crc32(crc: Longint; const buf; len: Integer): Longint;
 
+function zlibVersion: PChar;
+
 implementation
 
 {*************************************************************************************************
@@ -301,6 +298,8 @@ function adler32(adler: Longint; const buf; len: Integer): Longint;
 
 function crc32(crc: Longint; const buf; len: Integer): Longint;
   external;
+
+function zlibVersion; external;
 
 {** zlib function implementations ***************************************************************}
 
