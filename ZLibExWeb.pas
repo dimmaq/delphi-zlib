@@ -5,6 +5,11 @@ interface
 {$I jedi.inc}
 {$I ZLibEx.inc}
 
+{$IFNDEF DELPHIXE_UP}
+type
+  RawByteString = AnsiString;
+{$ENDIF}
+
 function ZDecompressWeb(const ABuffer: RawByteString): RawByteString;
 
 implementation
@@ -35,13 +40,27 @@ const
 
 function ZDecompressWeb(const ABuffer: RawByteString): RawByteString;
 var
-  buf: Pointer;
-  siz: Integer;
+  gz: TZDecompressionStream;
+  sout, sin: TMemoryStream;
 begin
-  ZDecompress2(Pointer(ABuffer), Length(ABuffer),
-    buf, siz, ZLIB_DECODE_GZIP_WINDOWBITS, 0);
-  SetLength(Result, siz);
-  Move(buf^, Pointer(Result)^, siz);
+  Result := '';
+  sin := nil;
+  gz := nil;
+  sout := nil;
+  try
+    sin := TMemoryStream.Create();
+    sin.WriteBuffer(Pointer(ABuffer)^, Length(ABuffer));
+    gz := TZDecompressionStream.Create(sin, ZLIB_DECODE_AUTO_WINDOWBITS);
+    sout := TMemoryStream.Create;
+    sout.CopyFrom(gz, 0);
+    SetLength(Result, sout.Size);
+    Move(sout.Memory^, Result[1], sout.Size);
+  finally
+    gz.Free;
+    sout.Free;
+    sin.Free;
+  end;
+
 end;
 
 end.
