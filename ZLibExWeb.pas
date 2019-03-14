@@ -53,8 +53,11 @@ begin
     gz := TZDecompressionStream.Create(sin, ZLIB_DECODE_AUTO_WINDOWBITS);
     sout := TMemoryStream.Create;
     sout.CopyFrom(gz, 0);
-    SetLength(Result, sout.Size);
-    Move(sout.Memory^, Result[1], sout.Size);
+    if sout.Size > 0 then
+    begin
+      SetLength(Result, sout.Size);
+      Move(sout.Memory^, Result[1], sout.Size);
+    end;
   finally
     gz.Free;
     sout.Free;
